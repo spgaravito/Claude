@@ -158,3 +158,21 @@ Del mega-repo de 24k estrellas, solo los dominios de negocio:
 | Go-to-market | 05-marketing-skill, 01-market-entry |
 | Presentación ejecutiva | 01-strategy-deck, 06-board-deck-builder |
 
+
+---
+
+## 07-impeccable (pbakaus/impeccable)
+Skill de diseño frontend de Paul Bakaus. Una sola skill con 23 modos: shape, init, document, extract (build), critique, audit (evaluación), polish, bolder, quieter, distill, harden, onboard (refinado), animate, colorize, typeset, layout, delight, overdrive (mejora), clarify, adapt, optimize (fixes) y live (iteración visual en navegador). Versión 4.0.4, Apache 2.0.
+
+**Requisito no documentado en la guía:** los hooks automáticos del plugin requieren Node 22+; sin ellos la skill funciona igual pero sin el pase de diseño automático tras cada edición.
+
+**Instalación Claude Code (plugin completo, con hooks):**
+```
+/plugin marketplace add pbakaus/impeccable
+/plugin install impeccable
+```
+
+**Instalación a nivel de proyecto (solo skill, sin hooks):**
+```
+npx impeccable install --providers=claude --scope=project
+```
