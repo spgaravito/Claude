@@ -4,7 +4,7 @@ This file provides domain-specific guidance for skills in `commercial/`.
 
 ## Purpose
 
-The Commercial domain ships skills that help **deal-desk operators, pricing teams, partner managers, RFP responders, and commercial forecasters** make per-deal and packaging decisions. This is **not strategy** (`c-level-advisor/cro-advisor`), **not sales execution** (`business-growth/sales-engineer`), and **not financial close** (`finance/financial-analysis`).
+The Commercial domain ships skills that help **deal-desk operators, pricing teams, partner managers, RFP responders, and commercial forecasters** make per-deal and packaging decisions. This is **not strategy** (`c-level-advisor/cro-advisor`), **not sales execution** (`business-growth/sales-engineer`), and **not financial close** (`finance/financial-analyst`).
 
 ## Skills (v2.8.0 complete)
 
@@ -54,7 +54,6 @@ Path-B 11-file contract per skill. SKILL.md includes a "Forcing-question library
 
 ## References
 
-- Master plan: `documentation/implementation/bizops-commercial-expansion-plan.md`
 - Matt Pocock derivation: `engineering/grill-with-docs`
 - Strategic complement: `c-level-advisor/cro-advisor`
 - Sales execution complement: `business-growth/sales-engineer`

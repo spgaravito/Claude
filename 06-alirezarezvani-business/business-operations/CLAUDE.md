@@ -56,6 +56,5 @@ skill/
 
 ## References
 
-- Master plan: `documentation/implementation/bizops-commercial-expansion-plan.md`
 - Matt Pocock derivation: `engineering/grill-me`, `engineering/grill-with-docs`
 - Strategic complement: `c-level-advisor/coo-advisor`

@@ -33,7 +33,7 @@ The skill emits **per-channel verdicts** (DOUBLE-DOWN / MAINTAIN / DEFUND / EXIT
 - Designing partner tiers, joint GTM motion, revshare splits → `partnerships-architect`
 - SDR-to-AE routing, lead scoring, MQL definitions → `business-growth/revenue-operations`
 - Strategic CRO decisions ("should we hire a VP Sales?", comp plan design) → `c-level-advisor/cro-advisor`
-- Quarterly close, GAAP revenue recognition, channel-level P&L for historical reporting → `finance/financial-analysis`
+- Quarterly close, GAAP revenue recognition, channel-level P&L for historical reporting → `finance/financial-analyst`
 - Per-deal discount approval → `deal-desk`
 - Pricing model design → `pricing-strategist`
 
@@ -117,7 +117,7 @@ cd commercial/skills/channel-economics && python3 scripts/cost_to_serve_calculat
 - **commercial/partnerships-architect** — partner tier design, joint GTM motion, revshare splits, partner enablement. Partner program *structure*, not partner program *economics*. This skill consumes the program structure as input and emits the economic verdict.
 - **business-growth/revenue-operations** — lead routing, SDR motion, MQL definition, pipeline operations. RevOps owns the funnel mechanics; this skill loads the channel-level economic outcome.
 - **c-level-advisor/cro-advisor** — strategic CRO judgment: when to hire a VP Sales, comp plan philosophy, territory design, multi-year revenue strategy. CRO advisor consumes channel-economics output as one input among many.
-- **finance/financial-analysis** — close-and-report on historical channel P&L per GAAP. This skill is forward-looking decision support; finance is historical record. Different time horizon, different audience, different output.
+- **finance/financial-analyst** — close-and-report on historical channel P&L per GAAP. This skill is forward-looking decision support; finance is historical record. Different time horizon, different audience, different output.
 - **commercial/deal-desk** — per-deal discount approval. Operates daily; this skill operates quarterly.
 - **commercial/pricing-strategist** — pricing model and tier design. Pricing is input; channel economics is what happens at that pricing across channels.
 

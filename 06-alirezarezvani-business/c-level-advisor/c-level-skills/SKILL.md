@@ -8,7 +8,7 @@ metadata:
   category: c-level
   domain: executive-advisory
   updated: 2026-06-11
-  skills_count: 33
+  skills_count: 34
   scripts_count: 37
   references_count: 68
 ---
@@ -34,6 +34,8 @@ This is the bundle index, not an advisor. It tells you what exists and where to 
 
 **Culture & collaboration (6):** culture-architect, company-os, founder-coach, strategic-alignment, change-management, internal-narrative.
 
+**Extra (1):** arquiteto-de-empresa — arquitecto de empresa / knowledge-base scaffolding (autor: leoal, añadido a esta colección; no forma parte del bundle original).
+
 Plus this index (1). 37 stdlib-only Python tools and 68 reference docs across the bundle.
 
 ## Routing Quick Reference
@@ -42,6 +44,6 @@ Full matrix in `../chief-of-staff/SKILL.md` and `../chief-of-staff/references/ro
 
 ## Related Layers
 
-- `../../c-level-agents/` — 13 cs-* persona agents + 21 `/cs:*` slash commands on top of these skills
-- `../../executive-mentor/` — adversarial `/em:*` critic commands
-- `../../CLAUDE.md` — full architecture diagram and integration guide
+- `../c-level-agents/` — 13 cs-* persona agents + 21 `/cs:*` slash commands on top of these skills
+- `../executive-mentor/` — adversarial `/em:*` critic commands
+- `../CLAUDE.md` — full architecture diagram and integration guide

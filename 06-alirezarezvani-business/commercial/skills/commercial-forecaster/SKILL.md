@@ -1,6 +1,6 @@
 ---
 name: commercial-forecaster
-description: "Use when building a quarterly bookings forecast, ARR projection, pipeline forecast, NRR projection, or commit/best-case/pipe-only board number — especially when the CRO needs to walk the board through funnel math + cohort ARR + per-stage conversion assumptions without the theatre of a single undefended number. Decomposes pipeline into commit, best-case, and pipe-only tiers; projects cohort-level NRR/GRR to surface leaky cohorts before they show up in the consolidated number; scores per-stage funnel confidence so soft-floor stages get treated differently from high-confidence ones. Every output explicitly names the conversion rate used, the data window, and the weighting choice. For Head of Commercial, RevOps, VP Sales, and CRO at quarterly forecast or board prep. NOT financial close (see finance/financial-analysis). NOT strategic CRO hiring/territory (see c-level-advisor/cro-advisor). NOT pricing (see sibling pricing-strategist)."
+description: "Use when building a quarterly bookings forecast, ARR projection, pipeline forecast, NRR projection, or commit/best-case/pipe-only board number — especially when the CRO needs to walk the board through funnel math + cohort ARR + per-stage conversion assumptions without the theatre of a single undefended number. Decomposes pipeline into commit, best-case, and pipe-only tiers; projects cohort-level NRR/GRR to surface leaky cohorts before they show up in the consolidated number; scores per-stage funnel confidence so soft-floor stages get treated differently from high-confidence ones. Every output explicitly names the conversion rate used, the data window, and the weighting choice. For Head of Commercial, RevOps, VP Sales, and CRO at quarterly forecast or board prep. NOT financial close (see finance/financial-analyst). NOT strategic CRO hiring/territory (see c-level-advisor/cro-advisor). NOT pricing (see sibling pricing-strategist)."
 version: 2.8.0
 author: claude-code-skills
 license: MIT
@@ -30,7 +30,7 @@ The skill recommends **three forecast numbers + an explicit assumption block**. 
 - You're being asked for a "single number" and you need the structured answer that surfaces the assumption
 
 **Do not use for:**
-- Backward-looking financial close + reporting → `finance/financial-analysis`
+- Backward-looking financial close + reporting → `finance/financial-analyst`
 - Strategic financial planning (multi-year, scenario, fundraise) → `c-level-advisor/cfo-advisor`
 - "Should we hire a VP Sales?" / territory design / comp plan → `c-level-advisor/cro-advisor`
 - Setting prices → sibling `pricing-strategist` (projects revenue *at* prices already set)
@@ -110,7 +110,7 @@ All scripts: stdlib only. `--help` and `--sample` work on all three.
 
 ## Distinct from
 
-- **`finance/financial-analysis`** — backward-looking financial close, GAAP/IFRS reporting, variance vs. budget. commercial-forecaster is forward-looking pipeline math.
+- **`finance/financial-analyst`** — backward-looking financial close, GAAP/IFRS reporting, variance vs. budget. commercial-forecaster is forward-looking pipeline math.
 - **`c-level-advisor/cfo-advisor`** — strategic multi-year financial planning, fundraise scenarios, runway. commercial-forecaster is one input to the CFO, not the strategy.
 - **`c-level-advisor/cro-advisor`** — strategic CRO judgment: "do we hire a VP Sales?", territory design, comp plan, when to add a sales engineer. commercial-forecaster is the math the CRO uses; cro-advisor is the judgment the CRO applies.
 - **sibling `pricing-strategist`** — sets the price (model + range). commercial-forecaster *projects revenue at those prices*. Pricing comes first; forecast comes after.

@@ -26,4 +26,4 @@ Run the `channel-economics` skill on this input:
 - Sibling `partnerships-architect` — partnership **structure** (tier, GTM, revshare). Channel-economics is the **math**.
 - `business-growth/revenue-operations` — process (lead routing, SDR motion)
 - `c-level-advisor/cro-advisor` — strategic
-- `finance/financial-analysis` — close + report (backward-looking); channel-economics is **forward** per-channel economics
+- `finance/financial-analyst` — close + report (backward-looking); channel-economics is **forward** per-channel economics

@@ -43,7 +43,7 @@ Same two-signal threshold pattern as `business-operations-skills`. Single-signal
 
 ## Workflow (Matt Pocock grill discipline)
 
-Derived from Matt Pocock's `grill-with-docs` pattern: **explore-then-ask, one question per turn with a recommended answer, walk the decision tree depth-first, track dependencies, anchor every challenge in the SaaS pricing / deal desk canon** (`references/`).
+Derived from Matt Pocock's `grill-with-docs` pattern: **explore-then-ask, one question per turn with a recommended answer, walk the decision tree depth-first, track dependencies, anchor every challenge in the SaaS pricing / deal desk canon** (the `references/` folders of the sibling skills: pricing-strategist, deal-desk, etc.).
 
 ### Step 1 — Explore before asking
 
@@ -116,7 +116,7 @@ Never run a sub-skill until the lane-defining decision is locked.
 - **`business-growth/revenue-operations`** — that's **process** (lead routing, SDR motion). Commercial is **per-deal economics + policy**.
 - **`business-growth/contract-and-proposal-writer`** — that's **authoring** prose. Commercial is **decision logic + structured response**.
 - **`c-level-advisor/cro-advisor`** — that's strategic CRO judgment ("when do we hire VP Sales?"). Commercial is tactical ("approve this discount").
-- **`finance/financial-analysis`** — that's **close + report**. Commercial is **forecast + per-deal economics**.
+- **`finance/financial-analyst`** — that's **close + report**. Commercial is **forecast + per-deal economics**.
 
 ## Output artifacts
 
@@ -142,4 +142,3 @@ Never run a sub-skill until the lane-defining decision is locked.
 
 - SaaS pricing canon: Tomasz Tunguz, David Skok, Bessemer Venture Partners
 - Deal desk: SaaStr playbooks, Winning by Design
-- Path-B build pattern: `documentation/implementation/bizops-commercial-expansion-plan.md`

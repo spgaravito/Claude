@@ -20,4 +20,4 @@ Run the `procurement-optimizer` skill on this input:
 ## Distinct from
 
 - `business-operations/skills/vendor-management` (sibling) — performance scoring of vendors you keep paying. Procurement-optimizer is **spend** rationalization + supplier consolidation.
-- `finance/financial-analysis` — financial close + reporting. Procurement-optimizer is decision support, not reporting.
+- `finance/financial-analyst` — financial close + reporting. Procurement-optimizer is decision support, not reporting.

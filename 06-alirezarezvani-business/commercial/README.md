@@ -34,7 +34,7 @@ v2.8.0 — 8 skills (orchestrator + 7 sub-skills), 21 stdlib Python tools, 28 re
 - `business-growth/contract-and-proposal-writer` — free-form authoring; rfp-responder is structured response
 - `c-level-advisor/cro-advisor` — strategic CRO ("when do we hire VP Sales?"), not tactical per-deal/per-policy
 - `c-level-advisor/cfo-advisor` — strategic financial planning; commercial-forecaster is tactical quarterly pipeline
-- `finance/financial-analysis` — close + report (backward); commercial-forecaster is forward
+- `finance/financial-analyst` — close + report (backward); commercial-forecaster is forward
 
 ## License
 

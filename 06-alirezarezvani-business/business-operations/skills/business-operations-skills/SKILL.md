@@ -141,4 +141,3 @@ Every sub-skill produces at least one artifact (markdown, CSV, or JSON) saved to
 ## References
 
 - See `c-level-advisor/coo-advisor` for strategic COO framing
-- Path-B build pattern: `documentation/implementation/bizops-commercial-expansion-plan.md`

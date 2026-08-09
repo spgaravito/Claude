@@ -23,7 +23,7 @@ Run the `commercial-forecaster` skill on this input:
 
 ## Distinct from
 
-- `finance/financial-analysis` — **close + report** (backward-looking). Commercial-forecaster is **forward** commercial pipeline.
+- `finance/financial-analyst` — **close + report** (backward-looking). Commercial-forecaster is **forward** commercial pipeline.
 - `c-level-advisor/cfo-advisor` — strategic financial planning. Commercial-forecaster is tactical, per-quarter.
 - `c-level-advisor/cro-advisor` — strategic CRO. Commercial-forecaster feeds CRO judgment.
 - Sibling `pricing-strategist` — sets prices; commercial-forecaster projects revenue at those prices.

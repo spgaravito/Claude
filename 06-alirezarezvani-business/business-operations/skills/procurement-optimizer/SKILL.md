@@ -34,7 +34,7 @@ This skill produces a deterministic, defensible artifact for each problem: categ
 ## When NOT to use
 
 - Scoring or auditing an individual vendor you've already decided to keep paying → sibling `vendor-management`.
-- Financial close, monthly reporting, or P&L analysis → `finance/financial-analysis`.
+- Financial close, monthly reporting, or P&L analysis → `finance/financial-analyst`.
 - Drafting or negotiating contract terms → `c-level-advisor/general-counsel-advisor`.
 - Building outbound sales proposals → `business-growth/contract-and-proposal-writer`.
 
@@ -134,7 +134,7 @@ cd business-operations/skills/procurement-optimizer && python3 scripts/spend_cat
 ## Distinct from
 
 - **Sibling `vendor-management`** — that's performance scoring (uptime, SLA, third-party risk) for vendors you've already decided to keep paying. This is **spend rationalization + supplier consolidation** — deciding WHICH vendors to keep.
-- **`finance/financial-analysis`** — that's financial close, P&L, reporting, DCF. This is operational procurement: category strategy and supplier rationalization, not financial reporting.
+- **`finance/financial-analyst`** — that's financial close, P&L, reporting, DCF. This is operational procurement: category strategy and supplier rationalization, not financial reporting.
 - **`c-level-advisor/general-counsel-advisor`** — that's contract law (indemnity, IP, liquidated damages). This is category-level spend strategy. Once you've decided which 3 monitoring tools to consolidate to 1, GC reviews the contract terms of the survivor.
 - **`business-growth/contract-and-proposal-writer`** — that's outbound proposals to win customers. This is inbound supplier rationalization.
 - **`finance/budgeting`** — that's annual budget planning. This is the inside view: where the budget is actually leaking.
