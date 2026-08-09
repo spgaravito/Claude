@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AIFC Canvas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0d0d0d; --surface:#111; --highlight:#0f0e1a;
+    --p-primary:#7F77DD; --p-mid:#534AB7; --p-light:#AFA9EC; --p-darkbg:#1e1c3a;
+    --t-primary:#f0eee8; --t-secondary:#c8c6c0; --t-body:#a8a6a0;
+    --t-muted:#888780; --t-dim:#5F5E5A; --border:#2a2a2a; --border-subtle:#1e1e1e;
+    --font:'Inter',-apple-system,Segoe UI,Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;background:var(--bg);}
+  body{font-family:var(--font);color:var(--t-primary);line-height:1.6;
+    -webkit-font-smoothing:antialiased;padding:40px 24px 64px;}
+  .wrap{max-width:980px;margin:0 auto;}
+  .eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .eyebrow .rule{width:20px;height:1px;background:var(--p-mid);}
+  .eyebrow .label{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--p-primary);}
+  h1{font-size:34px;font-weight:500;line-height:1.2;margin:0 0 6px;color:var(--t-primary);}
+  .meta{font-size:13px;color:var(--t-muted);margin:0 0 4px;}
+  .meta b{color:var(--t-secondary);font-weight:500;}
+  .legend{font-size:12px;color:var(--t-muted);margin:10px 0 18px;display:flex;gap:18px;flex-wrap:wrap;}
+  .legend .ev{color:var(--p-light);} .legend .as{color:var(--t-dim);}
+  .grid{display:grid;gap:1px;background:var(--border-subtle);border-radius:10px;overflow:hidden;}
+  .grid.two{grid-template-columns:1fr 1fr;}
+  .cell{background:var(--surface);padding:18px 18px 14px;min-height:150px;}
+  .cell h2{font-size:13px;font-weight:500;letter-spacing:0.04em;color:var(--p-light);margin:0 0 4px;}
+  .cell .hint{font-size:11px;color:var(--t-dim);margin:0 0 10px;}
+  ul{list-style:none;margin:0;padding:0;}
+  li{font-size:13px;line-height:1.5;color:var(--t-body);display:flex;gap:8px;align-items:flex-start;
+    padding:5px 0;border-bottom:0.5px solid var(--border-subtle);}
+  li:last-child{border-bottom:none;}
+  .dot{flex:0 0 auto;margin-top:1px;cursor:pointer;user-select:none;}
+  .dot.ev{color:var(--p-light);} .dot.as{color:var(--t-dim);}
+  .txt{flex:1;outline:none;color:var(--t-body);}
+  .txt:focus{color:var(--t-primary);}
+  .wt{flex:0 0 auto;font-size:11px;color:var(--p-light);border:0.5px solid var(--p-mid);
+    border-radius:3px;padding:0 5px;margin-top:1px;}
+  .add{background:none;border:none;color:var(--t-dim);font-family:var(--font);
+    font-size:12px;cursor:pointer;padding:8px 0 0;}
+  .add:hover{color:var(--p-light);}
+  table.matrix{width:100%;border-collapse:collapse;background:var(--surface);
+    border-radius:10px;overflow:hidden;font-size:13px;}
+  table.matrix th,table.matrix td{padding:10px 12px;border-bottom:0.5px solid var(--border-subtle);text-align:center;}
+  table.matrix th{color:var(--p-light);font-weight:500;font-size:12px;}
+  table.matrix th.opt,table.matrix td.opt{text-align:left;color:var(--t-secondary);}
+  table.matrix td.total{font-weight:500;color:var(--t-primary);}
+  table.matrix tr.lead td,table.matrix tr.tie td{background:var(--highlight);}
+  table.matrix tr.lead td.opt::after{content:' · current draft top';color:var(--p-light);font-size:11px;}
+  table.matrix tr.tie td.opt::after{content:' · tie — you decide';color:var(--p-light);font-size:11px;}
+  .mcell{width:48px;background:var(--bg);color:var(--t-primary);border:0.5px solid var(--border);
+    border-radius:4px;font-family:var(--font);font-size:13px;padding:4px;text-align:center;}
+  .wtin{width:42px;background:var(--bg);color:var(--p-light);border:0.5px solid var(--p-mid);
+    border-radius:4px;font-family:var(--font);font-size:12px;padding:3px;text-align:center;}
+  table.matrix td.rowlab{text-align:left;color:var(--t-secondary);}
+  table.matrix td.rowlab .dot{cursor:pointer;margin-right:7px;}
+  table.matrix td.rowlab .rowtxt{outline:none;}
+  table.matrix td.rowlab .rowtxt:focus{color:var(--t-primary);}
+  table.matrix td.cat{cursor:pointer;user-select:none;color:var(--t-primary);font-weight:500;}
+  table.matrix td.cat:hover{background:var(--highlight);}
+  table.matrix td.cat.empty{color:var(--t-dim);font-weight:400;}
+  table.matrix td.derived{text-align:left;color:var(--p-light);font-size:12px;}
+  table.matrix tr.warn td{background:rgba(217,140,140,0.08);}
+  .flag{color:#d98c8c;font-size:11px;margin-left:8px;}
+  .chain{display:flex;flex-direction:column;max-width:640px;}
+  .chain .node{background:var(--surface);border:0.5px solid var(--border-subtle);border-radius:8px;padding:12px 14px;}
+  .chain .node h2{font-size:11px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--p-light);margin:0 0 5px;}
+  .chain .node.problem,.chain .node.move{border-color:var(--p-mid);background:var(--highlight);}
+  .chain .node.root{border-color:var(--p-mid);}
+  .chain .node .row{display:flex;gap:8px;align-items:flex-start;}
+  .chain .link{display:flex;align-items:center;gap:7px;padding:5px 0 5px 16px;color:var(--t-dim);font-size:11px;}
+  .chain .link .arrow{color:var(--p-mid);font-size:14px;}
+  .chain .add{margin:6px 0 0 16px;}
+  .bmc-wrap{display:flex;flex-direction:column;gap:1px;background:var(--border-subtle);border-radius:10px;overflow:hidden;}
+  .bmc{display:grid;gap:1px;background:var(--border-subtle);grid-template-columns:repeat(5,1fr);
+    grid-template-areas:"kp ka vp cr cs" "kp kr vp ch cs";}
+  .bmc-bottom{display:grid;gap:1px;background:var(--border-subtle);grid-template-columns:1fr 1fr;}
+  .bmc .cell,.bmc-bottom .cell{min-height:118px;}
+  @media (max-width:680px){.bmc{grid-template-columns:1fr 1fr;grid-template-areas:"kp ka" "kr vp" "cr ch" "cs cs";}.bmc-bottom{grid-template-columns:1fr;}}
+  .actions{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+  .actions .what{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--t-dim);margin-right:4px;}
+  button.act{font-family:var(--font);font-size:13px;border-radius:4px;padding:8px 13px;cursor:pointer;
+    background:transparent;color:var(--t-body);border:0.5px solid var(--border);}
+  button.act:hover{color:var(--t-primary);border-color:var(--p-mid);}
+  button.act.primary{background:var(--p-primary);color:#fff;border:none;font-weight:500;}
+  button.act.primary:hover{color:#fff;}
+  .foot{margin-top:34px;padding-top:16px;border-top:0.5px solid var(--border-subtle);
+    font-size:11px;color:var(--t-dim);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+  .foot a{color:var(--t-muted);text-decoration:none;}
+  .foot .print{background:none;border:0.5px solid var(--border);color:var(--t-dim);
+    border-radius:4px;padding:5px 10px;font-family:var(--font);font-size:11px;cursor:pointer;}
+  #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--highlight);
+    border:0.5px solid var(--p-mid);color:var(--p-light);font-size:12px;padding:8px 14px;border-radius:6px;
+    opacity:0;transition:opacity .2s;pointer-events:none;}
+  #toast.show{opacity:1;}
+  @media (max-width:640px){.grid.two{grid-template-columns:1fr;}h1{font-size:26px;}}
+  @media print{body{padding:0;}.add,.actions,.foot .print{display:none;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow"><span class="rule"></span><span class="label" id="eyebrow">AIFC · CANVAS — first draft</span></div>
+  <h1 id="title">Canvas title</h1>
+  <p class="meta" id="subjectLine"></p>
+  <div class="legend" id="legend"></div>
+  <div id="board"></div>
+  <div class="actions" id="actions"><span class="what">What now</span></div>
+  <div class="foot">
+    <span>AIFueledCulture — a first draft you control, not an answer to accept. <a href="https://aifueledculture.com">aifueledculture.com</a></span>
+    <button class="print" onclick="window.print()">Save / print</button>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+/* ============================================================
+   CANVAS_DATA — the skill replaces this block with real content.
+   layout: "2x2" (SWOT, TOWS, stakeholder grid, risk grid)
+         | "columns" (pre-mortem, force field)
+         | "matrix" (weighted decision matrix)
+         | "categorical" (RACI, VRIO — cells hold a label, not a score)
+         | "chain" (5 Whys — linked causal steps, problem → why → root → move)
+         | "bmc" (Business Model Canvas — the classic 9-block grid)
+   cells[].items[]: { text, evidenced, weight? }   (weight optional badge)
+   matrix: { criteria:[{name,weight}], options:[{name,scores:[...]}] }
+   categorical: { rowLabel, columns:[{name}], options:[...], rows:[{label,cells:[...],evidenced}],
+                  rule?:"raci", derived?:"vrio", derivedLabel? }   (click a cell to cycle options)
+   chain: { problem, steps:[{text,evidenced}], countermeasure?:{text,evidenced} }   (each step drills the one above)
+   ============================================================ */
+const CANVAS_DATA = {
+  family: "SWOT",
+  status: "first draft",
+  title: "Canvas subject goes here",
+  subject: "What this canvas is about (the unit of analysis)",
+  decision: "The decision it is meant to serve",
+  layout: "2x2",
+  cells: [
+    { label: "Strengths",     hint: "Internal · helping", items: [ {text:"Draft item — edit me", evidenced:true}, {text:"Another draft item", evidenced:false} ] },
+    { label: "Weaknesses",    hint: "Internal · hurting", items: [ {text:"Draft item", evidenced:false} ] },
+    { label: "Opportunities", hint: "External · helping", items: [ {text:"Draft item", evidenced:true} ] },
+    { label: "Threats",       hint: "External · hurting", items: [ {text:"Draft item", evidenced:false} ] }
+  ],
+  actions: [
+    { label:"Cross into TOWS strategies", prompt:"Cross my SWOT quadrants into TOWS strategies (SO, ST, WO, WT).", primary:true }
+  ]
+};
+
+(function render(d){
+  document.title = "AIFC " + d.family + " — " + d.title;
+  document.getElementById("eyebrow").textContent = "AIFC · " + d.family.toUpperCase() + " — " + d.status;
+  document.getElementById("title").textContent = d.title;
+  document.getElementById("subjectLine").innerHTML =
+    "<b>Subject:</b> " + esc(d.subject) + " &nbsp;·&nbsp; <b>Decision it serves:</b> " + esc(d.decision);
+
+  const legend = document.getElementById("legend");
+  const board = document.getElementById("board");
+
+  if (d.layout === "matrix"){
+    legend.innerHTML = "<span>Scores 0–5 · weights set how much each criterion matters · the ranking recomputes as you edit</span>"
+      + "<span style='color:var(--t-dim)'>A draft ranking you control — not the answer</span>";
+    renderMatrix(d.matrix, board);
+  } else if (d.layout === "categorical"){
+    const cat = d.categorical;
+    let key = "<span><span class='ev'>&#9679;</span> evidenced &nbsp;<span class='as'>&#9675;</span> assumption — tap the dot to flip</span>"
+            + "<span>Click any cell to cycle: " + (cat.options||[]).join(" / ") + "</span>";
+    if (cat.rule === "raci") key += "<span style='color:var(--t-dim)'>Each row should have exactly one A (Accountable) — flagged if not</span>";
+    if (cat.derived === "vrio") key += "<span style='color:var(--t-dim)'>The implication is read from your Yes/No answers — a transparent rule, your inputs</span>";
+    legend.innerHTML = key;
+    renderCategorical(d.categorical, board);
+  } else if (d.layout === "chain"){
+    legend.innerHTML = "<span><span class='ev'>&#9679;</span> evidenced &nbsp;<span class='as'>&#9675;</span> assumption — tap a dot to flip</span>"
+      + "<span>Each <b>Why?</b> drills into the line above · click any line to edit</span>"
+      + "<span style='color:var(--t-dim)'>A first-draft causal chain you control — keep asking until the cause is actionable</span>";
+    renderChain(d.chain, board);
+  } else if (d.layout === "bmc"){
+    legend.innerHTML = "<span><span class='ev'>&#9679;</span> evidenced &nbsp;<span class='as'>&#9675;</span> assumption — tap a dot to flip</span>"
+      + "<span>One business model across nine blocks · click any line to edit</span>"
+      + "<span style='color:var(--t-dim)'>A first-draft model you control — gaps between blocks are the point</span>";
+    renderBMC(d.bmc, board);
+  } else {
+    legend.innerHTML = "<span><span class='ev'>&#9679;</span> evidenced — grounded in your input</span>"
+      + "<span><span class='as'>&#9675;</span> assumption — AI's guess, check it</span>"
+      + "<span style='color:var(--t-dim)'>Tap a dot to flip it · click any line to edit</span>";
+    const grid = document.createElement("div");
+    grid.className = "grid" + (d.layout === "2x2" ? " two" : "");
+    if (d.layout !== "2x2") grid.style.gridTemplateColumns = "repeat(" + d.cells.length + ", 1fr)";
+    d.cells.forEach(c => grid.appendChild(cellEl(c)));
+    board.appendChild(grid);
+  }
+
+  const act = document.getElementById("actions");
+  (d.actions||[]).forEach(a => {
+    const b = document.createElement("button");
+    b.className = "act" + (a.primary ? " primary" : "");
+    b.textContent = a.label;
+    b.onclick = () => copyPrompt(a.prompt);
+    act.appendChild(b);
+  });
+
+  function cellEl(c){
+    const cell = document.createElement("div"); cell.className = "cell";
+    const h = document.createElement("h2"); h.textContent = c.label; cell.appendChild(h);
+    if (c.hint){ const hi = document.createElement("p"); hi.className="hint"; hi.textContent=c.hint; cell.appendChild(hi); }
+    const ul = document.createElement("ul");
+    (c.items||[]).forEach(it => ul.appendChild(itemEl(it)));
+    cell.appendChild(ul);
+    const add = document.createElement("button"); add.className="add"; add.textContent="+ add item";
+    add.onclick = () => { const el = itemEl({text:"", evidenced:false}); ul.appendChild(el); el.querySelector(".txt").focus(); };
+    cell.appendChild(add);
+    return cell;
+  }
+  function itemEl(it){
+    const li = document.createElement("li");
+    const dot = document.createElement("span");
+    dot.className = "dot " + (it.evidenced ? "ev" : "as");
+    dot.textContent = it.evidenced ? "●" : "○";
+    dot.title = "flip evidenced / assumption";
+    dot.onclick = () => { const ev = dot.classList.toggle("ev"); dot.classList.toggle("as", !ev); dot.textContent = ev ? "●" : "○"; };
+    const t = document.createElement("span");
+    t.className = "txt"; t.setAttribute("contenteditable","true"); t.textContent = it.text;
+    li.appendChild(dot); li.appendChild(t);
+    if (it.weight !== undefined && it.weight !== null){
+      const w = document.createElement("span"); w.className="wt"; w.textContent = it.weight; w.title="strength / weight";
+      li.appendChild(w);
+    }
+    return li;
+  }
+  function renderMatrix(m, root){
+    const tbl = document.createElement("table"); tbl.className = "matrix";
+    const thead = document.createElement("thead"); const htr = document.createElement("tr");
+    htr.appendChild(th("Option","opt"));
+    m.criteria.forEach((c,ci) => {
+      const cell = document.createElement("th");
+      cell.innerHTML = esc(c.name) + "<br>";
+      const wi = document.createElement("input"); wi.type="number"; wi.min="0"; wi.max="9"; wi.step="1";
+      wi.className="wtin"; wi.value = c.weight; wi.dataset.ci = ci; wi.title="weight";
+      wi.oninput = recompute; cell.appendChild(wi); htr.appendChild(cell);
+    });
+    htr.appendChild(th("Score","total"));
+    thead.appendChild(htr); tbl.appendChild(thead);
+    const tb = document.createElement("tbody");
+    m.options.forEach((o,oi) => {
+      const tr = document.createElement("tr"); tr.dataset.oi = oi;
+      const otd = document.createElement("td"); otd.className="opt";
+      otd.setAttribute("contenteditable","true"); otd.textContent = o.name; tr.appendChild(otd);
+      m.criteria.forEach((c,ci) => {
+        const td = document.createElement("td");
+        const sin = document.createElement("input"); sin.type="number"; sin.min="0"; sin.max="5"; sin.step="1";
+        sin.className="mcell"; sin.value = o.scores[ci] != null ? o.scores[ci] : 0;
+        sin.dataset.oi = oi; sin.dataset.ci = ci; sin.oninput = recompute;
+        td.appendChild(sin); tr.appendChild(td);
+      });
+      const tot = document.createElement("td"); tot.className="total"; tot.dataset.total = oi; tot.textContent="0";
+      tr.appendChild(tot); tb.appendChild(tr);
+    });
+    tbl.appendChild(tb); root.appendChild(tbl);
+    function recompute(){
+      const weights = [...tbl.querySelectorAll(".wtin")].map(w => num(w.value));
+      const rows = [...tb.querySelectorAll("tr")];
+      let maxVal = -Infinity;
+      const totals = rows.map(tr => {
+        const scores = [...tr.querySelectorAll(".mcell")].map(s => num(s.value));
+        let total = 0; scores.forEach((s,ci) => total += s * (weights[ci]||0));
+        tr.querySelector(".total").textContent = Math.round(total);
+        tr.classList.remove("lead","tie");
+        if (total > maxVal) maxVal = total;
+        return total;
+      });
+      if (rows.length < 2) return;                       // never crown a sole option
+      const winners = rows.filter((tr,i) => totals[i] === maxVal);
+      if (winners.length === 1) winners[0].classList.add("lead");
+      else winners.forEach(tr => tr.classList.add("tie")); // a genuine tie, not a pick
+    }
+    recompute();
+  }
+  function renderCategorical(cat, root){
+    const opts = cat.options || ["—"];
+    const tbl = document.createElement("table"); tbl.className = "matrix";
+    const thead = document.createElement("thead"); const htr = document.createElement("tr");
+    htr.appendChild(th(cat.rowLabel || "Item","opt"));
+    cat.columns.forEach(col => { const e=document.createElement("th"); e.textContent=col.name; htr.appendChild(e); });
+    if (cat.derived) htr.appendChild(th(cat.derivedLabel || "Read","opt"));
+    thead.appendChild(htr); tbl.appendChild(thead);
+    const tb = document.createElement("tbody");
+    (cat.rows||[]).forEach(r => {
+      const tr = document.createElement("tr");
+      const rl = document.createElement("td"); rl.className = "opt rowlab";
+      const dot = document.createElement("span");
+      dot.className = "dot " + (r.evidenced ? "ev" : "as"); dot.textContent = r.evidenced ? "●" : "○";
+      dot.title = "flip evidenced / assumption";
+      dot.onclick = () => { const ev = dot.classList.toggle("ev"); dot.classList.toggle("as", !ev); dot.textContent = ev ? "●" : "○"; };
+      const lab = document.createElement("span"); lab.className = "rowtxt";
+      lab.setAttribute("contenteditable","true"); lab.textContent = r.label;
+      const flag = document.createElement("span"); flag.className = "flag";
+      rl.appendChild(dot); rl.appendChild(lab); rl.appendChild(flag); tr.appendChild(rl);
+      cat.columns.forEach((col,ci) => {
+        const td = document.createElement("td"); td.className = "cat";
+        setCat(td, (r.cells && r.cells[ci] != null) ? r.cells[ci] : "—");
+        td.onclick = () => { let i = opts.indexOf(td.dataset.val); i = (i + 1) % opts.length; setCat(td, opts[i]); recompute(); };
+        tr.appendChild(td);
+      });
+      if (cat.derived){ const dv = document.createElement("td"); dv.className = "derived"; tr.appendChild(dv); }
+      tb.appendChild(tr);
+    });
+    tbl.appendChild(tb); root.appendChild(tbl);
+    function setCat(td,v){ const blank = (v == null || v === "" || v === "—"); td.dataset.val = blank ? "—" : v; td.textContent = blank ? "—" : v; td.classList.toggle("empty", blank); }
+    function recompute(){
+      [...tb.querySelectorAll("tr")].forEach(tr => {
+        const vals = [...tr.querySelectorAll("td.cat")].map(td => td.dataset.val);
+        if (cat.rule === "raci"){
+          const a = vals.filter(v => (v||"").toUpperCase() === "A").length;
+          tr.classList.toggle("warn", a !== 1);
+          tr.querySelector(".flag").textContent = a === 0 ? "needs one Accountable" : a > 1 ? "more than one Accountable — pick one" : "";
+        }
+        if (cat.derived === "vrio") tr.querySelector("td.derived").textContent = vrioImplication(vals);
+      });
+    }
+    recompute();
+  }
+  function vrioImplication(cells){
+    const n = (cells||[]).map(x => (x||"—").toLowerCase());
+    const [v,r,i,o] = n; const open = x => (x === "—" || x === "?" || x === "" || x == null);
+    if (open(v)) return "—"; if (v === "no") return "Competitive disadvantage";
+    if (open(r)) return "—"; if (r === "no") return "Competitive parity";
+    if (open(i)) return "—"; if (i === "no") return "Temporary advantage";
+    if (open(o)) return "—"; if (o === "no") return "Advantage, not yet captured";
+    return "Sustained advantage";
+  }
+  function renderChain(ch, rootEl){
+    const wrap = document.createElement("div"); wrap.className = "chain";
+    function chNode(label, text, evidenced, kind){
+      const n = document.createElement("div"); n.className = "node" + (kind ? " " + kind : "");
+      const h = document.createElement("h2"); h.textContent = label; n.appendChild(h);
+      const row = document.createElement("div"); row.className = "row";
+      if (evidenced !== null && evidenced !== undefined){
+        const dot = document.createElement("span");
+        dot.className = "dot " + (evidenced ? "ev" : "as"); dot.textContent = evidenced ? "●" : "○";
+        dot.title = "flip evidenced / assumption";
+        dot.onclick = () => { const ev = dot.classList.toggle("ev"); dot.classList.toggle("as", !ev); dot.textContent = ev ? "●" : "○"; };
+        row.appendChild(dot);
+      }
+      const t = document.createElement("span"); t.className = "txt";
+      t.setAttribute("contenteditable","true"); t.textContent = text || "";
+      row.appendChild(t); n.appendChild(row); return n;
+    }
+    function chLink(label){
+      const l = document.createElement("div"); l.className = "link";
+      const a = document.createElement("span"); a.className = "arrow"; a.textContent = "↓";
+      const s = document.createElement("span"); s.textContent = label;
+      l.appendChild(a); l.appendChild(s); return l;
+    }
+    wrap.appendChild(chNode("Problem", ch.problem, null, "problem"));
+    const steps = ch.steps || [];
+    steps.forEach((s,i) => {
+      wrap.appendChild(chLink("Why?"));
+      const isRoot = i === steps.length - 1;
+      wrap.appendChild(chNode(isRoot ? "Root cause" : "Why " + (i+1), s.text, s.evidenced, isRoot ? "root" : ""));
+    });
+    function relabelWhys(){
+      const whys = [...wrap.querySelectorAll(".node")].filter(n => !n.classList.contains("problem") && !n.classList.contains("move"));
+      whys.forEach((n,i) => { const last = i === whys.length - 1; n.classList.toggle("root", last); n.querySelector("h2").textContent = last ? "Root cause" : "Why " + (i+1); });
+    }
+    const add = document.createElement("button"); add.className = "add"; add.textContent = "+ add a why";
+    add.onclick = () => { const lk = chLink("Why?"); const n = chNode("Why", "", false, ""); wrap.insertBefore(lk, add); wrap.insertBefore(n, add); relabelWhys(); n.querySelector(".txt").focus(); };
+    wrap.appendChild(add);
+    if (ch.countermeasure){
+      wrap.appendChild(chLink("So the move is"));
+      wrap.appendChild(chNode("Countermeasure — the move", ch.countermeasure.text, ch.countermeasure.evidenced, "move"));
+    }
+    rootEl.appendChild(wrap);
+  }
+  function renderBMC(b, rootEl){
+    b = b || {};
+    const wrap = document.createElement("div"); wrap.className = "bmc-wrap";
+    const top = document.createElement("div"); top.className = "bmc";
+    const defs = [
+      ["kp","Key Partners","Who we rely on", b.partners],
+      ["ka","Key Activities","What we must do", b.activities],
+      ["kr","Key Resources","What we need", b.resources],
+      ["vp","Value Propositions","The value we deliver", b.value],
+      ["cr","Customer Relationships","How we engage", b.relationships],
+      ["ch","Channels","How we reach them", b.channels],
+      ["cs","Customer Segments","Who we serve", b.segments]
+    ];
+    defs.forEach(([area,label,hint,cell]) => {
+      const el = cellEl({ label, hint, items: (cell && cell.items) || [] });
+      el.style.gridArea = area; top.appendChild(el);
+    });
+    wrap.appendChild(top);
+    const bottom = document.createElement("div"); bottom.className = "bmc-bottom";
+    bottom.appendChild(cellEl({ label:"Cost Structure", hint:"What it costs", items:(b.costs && b.costs.items) || [] }));
+    bottom.appendChild(cellEl({ label:"Revenue Streams", hint:"How we earn", items:(b.revenue && b.revenue.items) || [] }));
+    wrap.appendChild(bottom);
+    rootEl.appendChild(wrap);
+  }
+  function th(txt,cls){ const e=document.createElement("th"); if(cls)e.className=cls; e.textContent=txt; return e; }
+  function num(v){ const n=parseFloat(v); return isNaN(n)?0:n; }
+  function esc(s){ return (s||"").replace(/[&<>]/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[m])); }
+})(CANVAS_DATA);
+
+// keep edits plain: paste into any editable cell strips rich formatting
+document.addEventListener("paste", function(e){
+  const el = e.target;
+  if (el && el.getAttribute && el.getAttribute("contenteditable") === "true"){
+    e.preventDefault();
+    const text = ((e.clipboardData || window.clipboardData).getData("text/plain") || "");
+    document.execCommand("insertText", false, text);
+  }
+});
+
+function copyPrompt(text){
+  const done = () => showToast("Copied — paste it into your AI tool");
+  if (navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done).catch(()=>fallback(text,done)); }
+  else fallback(text, done);
+}
+function fallback(text, done){ const ta=document.createElement("textarea"); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand("copy");}catch(e){} ta.remove(); done(); }
+let toastT;
+function showToast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"),1800); }
+</script>
+</body>
+</html>
